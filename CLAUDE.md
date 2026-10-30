@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-Implemented: Clerk auth gate, dashboard (header, category bar, news cards), RSS fetch (`POST /api/news/fetch`), Claude translation/summary/classification (`src/lib/claude/`), and category add (`POST /api/categories`). Not yet built: category rename/delete, `GET /api/news`, category management screen, Notion save (the card button is a disabled placeholder).
+Implemented: Clerk auth gate, dashboard (header, category bar, news cards), RSS fetch (`POST /api/news/fetch`), Claude translation/summary/classification (`src/lib/claude/`), category add (`POST /api/categories`), and Notion save (`POST /api/news/:id/notion`, REST API, `src/lib/notion/`). Not yet built: category rename/delete, `GET /api/news`, category management screen.
 
 `PRD.md` (Korean) is the source of truth for requirements, data model (`categories`, `articles`), API routes, and open questions (§12) — read it before implementing anything.
 
@@ -24,11 +24,11 @@ Implemented: Clerk auth gate, dashboard (header, category bar, news cards), RSS 
 
 `AGENTS.md` states this Next.js (16.x, React 19) has breaking changes relative to common training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing Next.js code (routing, middleware/proxy, route handlers, etc.).
 
-## Architecture (per PRD; Notion parts not built yet)
+## Architecture (per PRD)
 
-- Stack: Next.js App Router (`src/app`, alias `@/*` → `src/*`), Tailwind 4, Clerk auth, Neon Postgres via `@neondatabase/serverless` + Drizzle ORM, Claude API (`@anthropic-ai/sdk`), `rss-parser`, Notion via MCP (`@modelcontextprotocol/sdk`).
+- Stack: Next.js App Router (`src/app`, alias `@/*` → `src/*`), Tailwind 4, Clerk auth, Neon Postgres via `@neondatabase/serverless` + Drizzle ORM, Claude API (`@anthropic-ai/sdk`), `rss-parser`, Notion via REST API (`fetch`, no SDK).
 - All pages and `/api/*` routes require Clerk auth; every query must be scoped by Clerk `userId` (`categories.user_id`, `articles.user_id`; articles unique on `(user_id, url)`).
 - Fetch pipeline (`POST /api/news/fetch`): parse 2 fixed RSS feeds (TechCrunch AI, The Verge AI) → skip URLs already stored (no Claude call) → one Claude call per new article returning JSON {titleKo, summaryKo, category} with the user's current category list in the prompt (model set in `src/lib/claude/client.ts`) → save. Partial source or Claude failure must not abort the rest: failed articles are saved with `title_ko` null and retried on the next fetch. Default categories are seeded on first fetch if the user has none (`src/lib/categories.ts`). "미분류" is a reserved name, not a real category.
 - Deleting a category sets its articles' `category_id` to null ("미분류").
-- Notion save (`POST /api/news/:id/notion`) stores `notion_page_id` on the article to prevent duplicates. Integration method (MCP client vs. REST) is still undecided (PRD §12.1) — confirm with the user before building.
+- Notion save (`POST /api/news/:id/notion`) stores `notion_page_id` on the article to prevent duplicates. Uses the Notion REST API (decided, not MCP) with `NOTION_API_TOKEN` + `NOTION_DATABASE_ID` (DB "AI 뉴스 북마크").
 - Secrets (Claude, Notion, Neon, Clerk keys) are server-side env vars only.

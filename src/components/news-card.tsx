@@ -1,3 +1,4 @@
+import { SaveNotionButton } from "@/components/save-notion-button";
 import type { Article } from "@/db/schema";
 
 function formatDate(date: Date | null) {
@@ -55,20 +56,10 @@ export function NewsCard({
         >
           원문 보기 ↗
         </a>
-        {article.notionPageId ? (
-          <span className="rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
-            ✓ 저장됨
-          </span>
-        ) : (
-          <button
-            type="button"
-            disabled
-            title="Notion 저장은 아직 준비 중입니다"
-            className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold tracking-wide text-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:text-neutral-300"
-          >
-            NOTION 저장
-          </button>
-        )}
+        <SaveNotionButton
+          articleId={article.id}
+          saved={Boolean(article.notionPageId)}
+        />
       </div>
     </article>
   );
