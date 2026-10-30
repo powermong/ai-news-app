@@ -28,8 +28,11 @@ export const articles = pgTable(
     url: text().notNull(),
     source: text().notNull(),
     titleOriginal: text("title_original").notNull(),
-    titleKo: text("title_ko").notNull(),
-    summaryKo: text("summary_ko").notNull(),
+    // RSS 요약 원문. Claude 번역·요약 단계의 입력으로 쓴다.
+    summaryOriginal: text("summary_original"),
+    // null이면 아직 Claude 처리 전이다.
+    titleKo: text("title_ko"),
+    summaryKo: text("summary_ko"),
     // Deleting a category leaves its articles uncategorized (null).
     categoryId: integer("category_id").references(() => categories.id, {
       onDelete: "set null",
