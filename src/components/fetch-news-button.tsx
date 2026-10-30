@@ -7,6 +7,8 @@ type FetchResult = {
   fetched: number;
   inserted: number;
   skipped: number;
+  processed: number;
+  failed: number;
   errors: { source: string; message: string }[];
 };
 
@@ -34,6 +36,9 @@ export function FetchNewsButton() {
 
       const result = data as FetchResult;
       const failed = result.errors.map((e) => `${e.source} 수집 실패`);
+      if (result.failed > 0) {
+        failed.push(`번역·요약 ${result.failed}건 실패 (다음에 다시 시도)`);
+      }
       setNotice({
         kind: failed.length > 0 ? "error" : "status",
         text: [`새 기사 ${result.inserted}건 추가`, ...failed].join(" · "),
