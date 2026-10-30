@@ -40,10 +40,10 @@ export function NewsCard({
       </div>
 
       <h2 className="mt-3 line-clamp-2 break-keep text-lg font-semibold leading-snug text-slate-900 dark:text-neutral-100">
-        {article.titleKo}
+        {article.titleKo ?? article.titleOriginal}
       </h2>
       <p className="mt-2 line-clamp-4 break-keep text-sm leading-relaxed text-slate-600 dark:text-neutral-400">
-        {article.summaryKo}
+        {article.summaryKo ?? article.summaryOriginal}
       </p>
 
       <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-4 dark:border-neutral-800">

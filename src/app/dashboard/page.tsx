@@ -3,6 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { Suspense } from "react";
 import { CategoryBar, type CategoryChip } from "@/components/category-bar";
+import { FetchNewsButton } from "@/components/fetch-news-button";
 import { NewsCard, NewsCardSkeleton } from "@/components/news-card";
 import { db } from "@/db";
 import { articles, categories } from "@/db/schema";
@@ -20,7 +21,10 @@ export default function DashboardPage(props: PageProps<"/dashboard">) {
           <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-neutral-100">
             AI 뉴스 수집기
           </h1>
-          <UserButton />
+          <div className="flex items-center gap-4">
+            <FetchNewsButton />
+            <UserButton />
+          </div>
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6">
