@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+// 로그인 게이트 뒤에서만 렌더링되므로 instant navigation 검증에서 제외한다
+export const instant = false;
+
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
