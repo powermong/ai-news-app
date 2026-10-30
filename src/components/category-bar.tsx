@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AddCategoryButton } from "./add-category-button";
 
 export type CategoryChip = {
   // "all" | "uncategorized" | 카테고리 id
@@ -41,15 +42,7 @@ export function CategoryBar({
           </Link>
         );
       })}
-      <button
-        type="button"
-        disabled
-        aria-label="카테고리 추가"
-        title="카테고리 추가는 아직 준비 중입니다"
-        className="inline-flex items-center gap-1 rounded-full border border-dashed border-slate-300 px-3.5 py-1.5 text-sm text-slate-500 disabled:cursor-not-allowed dark:border-neutral-700 dark:text-neutral-500"
-      >
-        <span aria-hidden>+</span> 카테고리 추가
-      </button>
+      <AddCategoryButton />
     </div>
   );
 }
