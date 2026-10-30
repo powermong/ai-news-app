@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Only the `create-next-app` scaffold plus dependencies exist; no app code has been written yet. `PRD.md` (Korean) is the source of truth for requirements, data model (`categories`, `articles`), API routes, and open questions (§12) — read it before implementing anything.
 
+## UI guide
+
+`ui.md` (Korean) is the UI style guide (Tailwind classes, layout, component specs for the dashboard: header, category bar with add button, news cards). Read it before building or changing any UI.
+
 ## Commands
 
 - `npm run dev` — dev server (http://localhost:3000)
