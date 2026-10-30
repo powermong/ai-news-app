@@ -2,6 +2,7 @@ import Parser from "rss-parser";
 import { RSS_SOURCES, type RssSource } from "./sources";
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
+const MAX_PER_SOURCE = 10;
 
 const parser = new Parser({
   timeout: 10_000,
@@ -57,7 +58,10 @@ async function fetchSource(source: RssSource, since: Date) {
     });
   }
 
-  return items;
+  // 소스당 최신 기사만 가져와 Claude 호출 수와 처리 시간을 제한한다
+  return items
+    .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
+    .slice(0, MAX_PER_SOURCE);
 }
 
 // 소스 하나가 실패해도 나머지는 계속 처리한다
