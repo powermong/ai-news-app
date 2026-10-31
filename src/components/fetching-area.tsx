@@ -25,7 +25,7 @@ export function FetchingArea({
       {header}
       <main
         aria-busy={fetching}
-        className={`mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6 ${
+        className={`mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-6 sm:px-6 ${
           fetching ? "pointer-events-none animate-pulse opacity-60" : ""
         }`}
       >

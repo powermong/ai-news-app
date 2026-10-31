@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { CategoryBar, type CategoryChip } from "@/components/category-bar";
 import { FetchNewsButton } from "@/components/fetch-news-button";
 import { FetchingArea } from "@/components/fetching-area";
+import { Footer } from "@/components/footer";
 import { KeywordSearch } from "@/components/keyword-search";
 import { NewsCountBadge } from "@/components/news-count-badge";
 import { NewsCard, NewsCardSkeleton } from "@/components/news-card";
@@ -18,7 +19,7 @@ export const metadata = { title: "대시보드 · AI 뉴스 수집기" };
 
 export default function DashboardPage(props: PageProps<"/dashboard">) {
   return (
-    <div className="flex-1 bg-slate-50 dark:bg-neutral-950">
+    <div className="flex flex-1 flex-col bg-slate-50 dark:bg-neutral-950">
       <FetchingArea
         header={
           <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/80">
@@ -38,6 +39,7 @@ export default function DashboardPage(props: PageProps<"/dashboard">) {
           <DashboardContent searchParams={props.searchParams} />
         </Suspense>
       </FetchingArea>
+      <Footer />
     </div>
   );
 }
