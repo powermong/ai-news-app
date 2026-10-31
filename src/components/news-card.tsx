@@ -1,3 +1,4 @@
+import { DeleteNewsButton } from "@/components/delete-news-button";
 import { SaveNotionButton } from "@/components/save-notion-button";
 import type { Article } from "@/db/schema";
 
@@ -24,8 +25,9 @@ export function NewsCard({
   const date = formatDate(article.publishedAt ?? article.fetchedAt);
 
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 transition-shadow hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
-      <div className="flex items-center justify-between gap-2">
+    <article className="relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 transition-shadow hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
+      <DeleteNewsButton articleId={article.id} />
+      <div className="flex items-center justify-between gap-2 pr-8">
         <span
           className={
             categoryName
