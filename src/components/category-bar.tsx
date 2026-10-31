@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AddCategoryButton } from "./add-category-button";
+import { ManageableCategoryChip } from "./manageable-category-chip";
 
 export type CategoryChip = {
   // "all" | "uncategorized" | 카테고리 id
@@ -30,6 +31,12 @@ export function CategoryBar({
     >
       {chips.map((chip) => {
         const active = chip.key === selected;
+        // 실제 카테고리만 이름 수정·삭제할 수 있다
+        if (chip.key !== "all" && chip.key !== "uncategorized") {
+          return (
+            <ManageableCategoryChip key={chip.key} chip={chip} active={active} />
+          );
+        }
         return (
           <Link
             key={chip.key}

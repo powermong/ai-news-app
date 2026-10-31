@@ -60,12 +60,14 @@ npx drizzle-kit migrate    # 마이그레이션 적용
 |---|---|
 | `POST /api/news/fetch` | RSS 수집, 번역·요약·분류, 저장 |
 | `POST /api/categories` | 카테고리 추가 |
+| `PATCH /api/categories/:id` | 카테고리 이름 수정 |
+| `DELETE /api/categories/:id` | 카테고리 삭제 (기사는 미분류로 이동) |
 | `POST /api/news/:id/notion` | 기사를 Notion에 저장 |
 
 ## 구현 현황
 
-구현됨: 로그인, 대시보드, 뉴스 수집, Claude 번역·요약·분류, 카테고리 추가, Notion 저장.
-미구현: 카테고리 이름 수정·삭제, `GET /api/news`, 카테고리 관리 화면.
+구현됨: 로그인, 대시보드, 뉴스 수집, Claude 번역·요약·분류, 카테고리 추가·이름 수정·삭제, Notion 저장.
+미구현: `GET /api/news`, 카테고리 관리 화면.
 
 ## 문서
 

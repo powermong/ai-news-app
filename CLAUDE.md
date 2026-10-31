@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-Implemented: Clerk auth gate, dashboard (header, category bar, news cards), RSS fetch (`POST /api/news/fetch`), Claude translation/summary/classification (`src/lib/claude/`), category add (`POST /api/categories`), and Notion save (`POST /api/news/:id/notion`, REST API, `src/lib/notion/`). Not yet built: category rename/delete, `GET /api/news`, category management screen.
+Implemented: Clerk auth gate, dashboard (header, category bar, news cards), RSS fetch (`POST /api/news/fetch`), Claude translation/summary/classification (`src/lib/claude/`), category add/rename/delete (`POST /api/categories`, `PATCH|DELETE /api/categories/:id`), and Notion save (`POST /api/news/:id/notion`, REST API, `src/lib/notion/`). Not yet built: `GET /api/news`, category management screen.
 
 `PRD.md` (Korean) is the source of truth for requirements, data model (`categories`, `articles`), API routes, and open questions (§12) — read it before implementing anything.
 
