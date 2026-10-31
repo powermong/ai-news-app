@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { CategoryBar, type CategoryChip } from "@/components/category-bar";
 import { FetchNewsButton } from "@/components/fetch-news-button";
 import { KeywordSearch } from "@/components/keyword-search";
+import { NewsCountBadge } from "@/components/news-count-badge";
 import { NewsCard, NewsCardSkeleton } from "@/components/news-card";
 import { db } from "@/db";
 import { articles, categories } from "@/db/schema";
@@ -112,6 +113,7 @@ async function DashboardContent({
 
   return (
     <>
+      <NewsCountBadge total={total} />
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <CategoryBar chips={chips} selected={selected} />
         <KeywordSearch query={query} category={selected} />
