@@ -57,6 +57,7 @@ export function FetchNewsButton() {
 
   useEffect(() => {
     setFetching(busy);
+    return () => setFetching(false);
   }, [busy, setFetching]);
 
   return (
