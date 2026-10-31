@@ -10,6 +10,7 @@ export const RSS_SOURCES: RssSource[] = [
   },
   {
     name: "The Verge",
-    feedUrl: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+    feedUrl:
+      "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
   },
 ];

@@ -27,6 +27,9 @@ export async function DELETE(
     }
     return Response.json({ ok: true });
   } catch {
-    return Response.json({ error: "뉴스를 삭제하지 못했어요" }, { status: 500 });
+    return Response.json(
+      { error: "뉴스를 삭제하지 못했어요" },
+      { status: 500 },
+    );
   }
 }

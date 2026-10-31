@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { CategoryBar, type CategoryChip } from "@/components/category-bar";
 import { FetchNewsButton } from "@/components/fetch-news-button";
 import { KeywordSearch } from "@/components/keyword-search";
-import { NewsCard,NewsCardSkeleton } from "@/components/news-card";
+import { NewsCard, NewsCardSkeleton } from "@/components/news-card";
 import { db } from "@/db";
 import { articles, categories } from "@/db/schema";
 
@@ -56,7 +56,10 @@ async function DashboardContent({
     .orderBy(categories.id);
 
   const counts = await db
-    .select({ categoryId: articles.categoryId, count: sql<number>`count(*)::int` })
+    .select({
+      categoryId: articles.categoryId,
+      count: sql<number>`count(*)::int`,
+    })
     .from(articles)
     .where(eq(articles.userId, userId))
     .groupBy(articles.categoryId);

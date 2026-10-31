@@ -60,7 +60,9 @@ export async function processArticle(
   });
 
   if (response.stop_reason !== "end_turn") {
-    throw new Error(`Claude 응답이 완료되지 않았어요 (${response.stop_reason})`);
+    throw new Error(
+      `Claude 응답이 완료되지 않았어요 (${response.stop_reason})`,
+    );
   }
 
   const text = response.content.find((block) => block.type === "text");

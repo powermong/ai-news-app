@@ -34,13 +34,21 @@ export function CategoryBar({
         // 실제 카테고리만 이름 수정·삭제할 수 있다
         if (chip.key !== "all" && chip.key !== "uncategorized") {
           return (
-            <ManageableCategoryChip key={chip.key} chip={chip} active={active} />
+            <ManageableCategoryChip
+              key={chip.key}
+              chip={chip}
+              active={active}
+            />
           );
         }
         return (
           <Link
             key={chip.key}
-            href={chip.key === "all" ? "/dashboard" : `/dashboard?category=${chip.key}`}
+            href={
+              chip.key === "all"
+                ? "/dashboard"
+                : `/dashboard?category=${chip.key}`
+            }
             aria-current={active ? "true" : undefined}
             className={`${chipBase} ${active ? chipActive : chipIdle}`}
           >

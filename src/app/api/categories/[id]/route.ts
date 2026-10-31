@@ -33,12 +33,18 @@ export async function PATCH(
       .where(and(eq(categories.id, id), eq(categories.userId, userId)))
       .returning();
     if (!updated) {
-      return Response.json({ error: "카테고리를 찾을 수 없어요" }, { status: 404 });
+      return Response.json(
+        { error: "카테고리를 찾을 수 없어요" },
+        { status: 404 },
+      );
     }
     return Response.json(updated);
   } catch (e) {
     if (isUniqueViolation(e)) {
-      return Response.json({ error: "이미 있는 카테고리예요" }, { status: 409 });
+      return Response.json(
+        { error: "이미 있는 카테고리예요" },
+        { status: 409 },
+      );
     }
     throw e;
   }
@@ -64,7 +70,10 @@ export async function DELETE(
     .where(and(eq(categories.id, id), eq(categories.userId, userId)))
     .returning();
   if (!deleted) {
-    return Response.json({ error: "카테고리를 찾을 수 없어요" }, { status: 404 });
+    return Response.json(
+      { error: "카테고리를 찾을 수 없어요" },
+      { status: 404 },
+    );
   }
   return Response.json({ ok: true });
 }
