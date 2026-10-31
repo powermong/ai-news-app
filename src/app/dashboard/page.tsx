@@ -3,6 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { and, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
 import { Suspense } from "react";
 import { CategoryBar, type CategoryChip } from "@/components/category-bar";
+import { FetchingArea } from "@/components/fetching-area";
 import { FetchNewsButton } from "@/components/fetch-news-button";
 import { KeywordSearch } from "@/components/keyword-search";
 import { NewsCountBadge } from "@/components/news-count-badge";
@@ -18,22 +19,25 @@ export const metadata = { title: "대시보드 · AI 뉴스 수집기" };
 export default function DashboardPage(props: PageProps<"/dashboard">) {
   return (
     <div className="flex-1 bg-slate-50 dark:bg-neutral-950">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/80">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-          <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-neutral-100">
-            AI 뉴스 수집기
-          </h1>
-          <div className="flex items-center gap-4">
-            <FetchNewsButton />
-            <UserButton />
-          </div>
-        </div>
-      </header>
-      <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6">
+      <FetchingArea
+        header={
+          <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/80">
+            <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
+              <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-neutral-100">
+                AI 뉴스 수집기
+              </h1>
+              <div className="flex items-center gap-4">
+                <FetchNewsButton />
+                <UserButton />
+              </div>
+            </div>
+          </header>
+        }
+      >
         <Suspense fallback={<DashboardSkeleton />}>
           <DashboardContent searchParams={props.searchParams} />
         </Suspense>
-      </main>
+      </FetchingArea>
     </div>
   );
 }

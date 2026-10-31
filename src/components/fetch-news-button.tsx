@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useSetFetching } from "@/components/fetching-area";
 
 type FetchResult = {
   fetched: number;
@@ -16,6 +17,7 @@ type Notice = { kind: "status" | "error"; text: string };
 
 export function FetchNewsButton() {
   const router = useRouter();
+  const setFetching = useSetFetching();
   const [loading, setLoading] = useState(false);
   const [refreshing, startRefresh] = useTransition();
   const [notice, setNotice] = useState<Notice | null>(null);
@@ -52,6 +54,10 @@ export function FetchNewsButton() {
   }
 
   const busy = loading || refreshing;
+
+  useEffect(() => {
+    setFetching(busy);
+  }, [busy, setFetching]);
 
   return (
     <div className="flex items-center gap-3">
