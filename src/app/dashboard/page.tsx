@@ -7,6 +7,7 @@ import { FetchNewsButton } from "@/components/fetch-news-button";
 import { FetchingArea } from "@/components/fetching-area";
 import { Footer } from "@/components/footer";
 import { KeywordSearch } from "@/components/keyword-search";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { NewsCountBadge } from "@/components/news-count-badge";
 import { NewsCard, NewsCardSkeleton } from "@/components/news-card";
 import { db } from "@/db";
@@ -29,6 +30,7 @@ export default function DashboardPage(props: PageProps<"/dashboard">) {
               </h1>
               <div className="flex items-center gap-4">
                 <FetchNewsButton />
+                <ThemeToggle />
                 <UserButton />
               </div>
             </div>
