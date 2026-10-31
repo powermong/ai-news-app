@@ -20,6 +20,10 @@ Implemented: Clerk auth gate, dashboard (header, category bar, news cards), RSS 
 - No test runner is configured.
 - Drizzle: schema in `src/db/schema.ts`, config in `drizzle.config.ts`, migrations in `drizzle/` (`npx drizzle-kit generate|migrate|push`).
 
+## Custom commands
+
+- `/news-workflow [branch-name]` (`.claude/commands/news-workflow.md`) — new-feature workflow: verify on `main` (warn and ask before switching) → create the branch (if no name is given, ask what to build and propose a lowercase-hyphen name) → remind the stack/conventions → on "완료"/"done", list changed files, propose a commit message, commit, and merge into `main` → summarize the work. Use it when starting a new feature.
+
 ## Next.js version warning
 
 `AGENTS.md` states this Next.js (16.x, React 19) has breaking changes relative to common training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing Next.js code (routing, middleware/proxy, route handlers, etc.).
