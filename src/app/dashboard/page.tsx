@@ -1,10 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
 import { Suspense } from "react";
 import { CategoryBar, type CategoryChip } from "@/components/category-bar";
 import { FetchNewsButton } from "@/components/fetch-news-button";
-import { NewsCard, NewsCardSkeleton } from "@/components/news-card";
+import { KeywordSearch } from "@/components/keyword-search";
+import { NewsCard,NewsCardSkeleton } from "@/components/news-card";
 import { db } from "@/db";
 import { articles, categories } from "@/db/schema";
 
@@ -44,8 +45,9 @@ async function DashboardContent({
   const { userId } = await auth();
   if (!userId) return null;
 
-  const { category } = await searchParams;
+  const { category, q } = await searchParams;
   const param = typeof category === "string" ? category : "all";
+  const query = typeof q === "string" ? q.trim() : "";
 
   const userCategories = await db
     .select()
@@ -83,10 +85,21 @@ async function DashboardContent({
         ? isNull(articles.categoryId)
         : eq(articles.categoryId, Number(selected));
 
+  // LIKE 와일드카드(%, _, \)는 리터럴로 취급한다
+  const pattern = `%${query.replace(/[\\%_]/g, "\\$&")}%`;
+  const keywordFilter = query
+    ? or(
+        ilike(articles.titleKo, pattern),
+        ilike(articles.titleOriginal, pattern),
+        ilike(articles.summaryKo, pattern),
+        ilike(articles.summaryOriginal, pattern),
+      )
+    : undefined;
+
   const rows = await db
     .select()
     .from(articles)
-    .where(and(eq(articles.userId, userId), filter))
+    .where(and(eq(articles.userId, userId), filter, keywordFilter))
     .orderBy(
       sql`${articles.publishedAt} desc nulls last`,
       desc(articles.fetchedAt),
@@ -96,13 +109,18 @@ async function DashboardContent({
 
   return (
     <>
-      <CategoryBar chips={chips} selected={selected} />
+      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+        <CategoryBar chips={chips} selected={selected} />
+        <KeywordSearch query={query} category={selected} />
+      </div>
       {rows.length === 0 ? (
         <div className="py-20 text-center">
           <p className="text-lg font-semibold text-slate-900 dark:text-neutral-100">
             {total === 0
               ? "아직 가져온 뉴스가 없어요"
-              : "이 카테고리에는 뉴스가 없어요"}
+              : query
+                ? `'${query}'에 해당하는 뉴스가 없어요`
+                : "이 카테고리에는 뉴스가 없어요"}
           </p>
         </div>
       ) : (
