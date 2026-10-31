@@ -32,15 +32,15 @@
 
 - 폰트: 레이아웃에 이미 등록된 Geist(`font-sans`). 한글은 시스템 폰트로 폴백된다.
 - 앱 이름: `text-xl font-bold tracking-tight`
-- 카드 제목: `text-lg font-semibold leading-snug`
-- 요약: `text-sm leading-relaxed`
-- 메타(출처·날짜): `text-xs`
+- 카드 제목: `text-[1.0625rem] font-semibold leading-snug tracking-tight`
+- 요약: `text-sm leading-[1.7]`
+- 메타(출처·날짜): `text-xs` (출처는 `font-medium`, 날짜는 `tabular-nums`)
 
 ### 형태
 
-- 카드: `rounded-2xl border p-5`, 그림자는 hover에서만 `hover:shadow-md`
+- 카드: `rounded-2xl border p-6`, 그림자는 hover에서만 `hover:shadow-lg hover:shadow-indigo-900/5` (4.3 참고)
 - 버튼·칩: `rounded-full`(칩) / `rounded-lg`(버튼)
-- 전환: `transition-colors` / `transition-shadow`, 기본 duration 사용
+- 전환: `transition-colors`, 카드는 `transition-[border-color,box-shadow,transform] duration-200 ease-out`. 움직임은 `motion-reduce:`로 끌 수 있게 한다.
 
 ## 3. 레이아웃
 
@@ -128,8 +128,11 @@ dark:hover:border-indigo-400 dark:hover:text-indigo-400
 카드 구성은 PRD §6.5를 따른다: 카테고리 배지, 한국어 제목, 요약, 출처·발행일, 원문 링크, NOTION 저장 버튼.
 
 ```
-<article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5
-  transition-shadow hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
+<article className="group relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6
+  transition-[border-color,box-shadow,transform] duration-200 ease-out
+  hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-900/5
+  motion-reduce:transition-none motion-reduce:hover:translate-y-0
+  dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-indigo-500/50 dark:hover:shadow-black/40">
   ① 상단 줄: 카테고리 배지 + 출처·날짜
   ② 제목
   ③ 요약
@@ -139,14 +142,14 @@ dark:hover:border-indigo-400 dark:hover:text-indigo-400
 
 | 영역 | 클래스 | 비고 |
 |---|---|---|
-| ① 상단 줄 | `flex items-center justify-between gap-2` | 좌: 배지, 우: 메타 |
-| 카테고리 배지 | `rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300` | 미분류는 `bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-400` |
-| 메타 | `text-xs text-slate-500 dark:text-neutral-500` | "TechCrunch · 2026.10.30" |
-| ② 제목 | `mt-3 text-lg font-semibold leading-snug text-slate-900 break-keep dark:text-neutral-100` | 최대 2줄 `line-clamp-2` |
-| ③ 요약 | `mt-2 text-sm leading-relaxed text-slate-600 break-keep dark:text-neutral-400` | 3~4줄, `line-clamp-4` |
+| ① 상단 줄 | `flex items-center justify-between gap-3 pr-8` | 좌: 배지, 우: 메타 (`pr-8`은 삭제 버튼 자리) |
+| 카테고리 배지 | `shrink-0 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300` | 미분류는 `bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-400` |
+| 메타 | 바깥 `min-w-0 truncate text-xs text-slate-500 dark:text-neutral-400`, 출처 `font-medium text-slate-700 dark:text-neutral-300`, 날짜 `ml-1.5 tabular-nums` | "TechCrunch 2026.10.30", 길면 말줄임 |
+| ② 제목 | `mt-4 line-clamp-2 break-keep text-[1.0625rem] font-semibold leading-snug tracking-tight text-slate-900 transition-colors duration-200 group-hover:text-indigo-700 dark:text-neutral-50 dark:group-hover:text-indigo-300` | 최대 2줄, 카드 hover 시 인디고로 변경 |
+| ③ 요약 | `mt-2.5 line-clamp-4 break-keep text-sm leading-[1.7] text-slate-600 dark:text-neutral-400` | 3~4줄 |
 | ④ 하단 줄 | `mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-4 dark:border-neutral-800` | 카드 높이가 달라도 하단 정렬 |
 
-- 제목이 곧 원문 링크가 되지 않도록 한다. 원문은 하단의 별도 링크로 연다: `target="_blank" rel="noopener noreferrer"`, `text-sm font-medium text-slate-600 hover:text-indigo-600 hover:underline`, 문구 "원문 보기 ↗"
+- 제목이 곧 원문 링크가 되지 않도록 한다. 원문은 하단의 별도 링크로 연다: `target="_blank" rel="noopener noreferrer"`, `group/link inline-flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-indigo-700 dark:hover:text-indigo-300`, 문구 "원문 보기" + `aria-hidden` `↗`. 밑줄 대신 링크 hover 시 `↗`가 `-translate-y-0.5 translate-x-0.5`로 움직인다.
 
 **NOTION 저장 버튼** (PRD §6.6)
 
